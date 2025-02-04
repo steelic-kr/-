@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세계 백지도</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            font-size: 2.5em;
+        }
+        .map-container {
+            position: relative;
+            display: inline-block;
+        }
+        .draggable {
+            position: absolute;
+            background: white;
+            border: 1px solid black;
+            padding: 5px;
+            cursor: move;
+        }
+        .input-container {
+            margin-top: 20px;
+        }
+        .delete-button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>세계 백지도</h1>
+    <div class="map-container" id="mapContainer">
+        <img src="world-map.png" alt="세계 백지도" width="800">
+    </div>
+    <p>전 세계에는 UN 회원국 193개국과 UN 옵저버 국가 바티칸과 팔레스타인을 합쳐 195개의 정식 국가(國家)가 있습니다.</p>
+    
+    <div class="input-container">
+        <input type="text" id="userText" placeholder="텍스트를 입력하세요">
+        <button onclick="addText()">추가</button>
+    </div>
+    
+    <button class="delete-button" onclick="deleteAllText()">삭제</button>
+
+    <script>
+        function addText() {
+            const textValue = document.getElementById("userText").value;
+            if (textValue.trim() === "") return;
+            
+            const textBox = document.createElement("div");
+            textBox.className = "draggable";
+            textBox.textContent = textValue;
+            textBox.style.left = "10px";
+            textBox.style.top = "10px";
+            
+            document.getElementById("mapContainer").appendChild(textBox);
+            makeDraggable(textBox);
+        }
+
+        function makeDraggable(element) {
+            let offsetX, offsetY, isDragging = false;
+            
+            element.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                offsetX = e.clientX - element.offsetLeft;
+                offsetY = e.clientY - element.offsetTop;
+            });
+            
+            document.addEventListener("mousemove", (e) => {
+                if (isDragging) {
+                    element.style.left = `${e.clientX - offsetX}px`;
+                    element.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+            
+            document.addEventListener("mouseup", () => {
+                isDragging = false;
+            });
+        }
+
+        function deleteAllText() {
+            const elements = document.querySelectorAll(".draggable");
+            elements.forEach(element => element.remove());
+        }
+    </script>
+</body>
+</html>
