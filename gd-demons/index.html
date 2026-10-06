@@ -122,6 +122,15 @@ td.act { display: none; }
 th.act { display: none; }
 td.act { text-align: right; }
 td.act .btn + .btn { margin-left: 6px; }
+td.act .day { display: inline-flex; margin-right: 6px; vertical-align: middle; }
+td.act .day .btn { padding: 3px 7px; margin: 0; border-radius: 0; font-size: 11px; line-height: 1.3; }
+td.act .day .btn:first-child { border-radius: 5px 0 0 5px; }
+td.act .day .btn + .btn { margin-left: -1px; border-radius: 0 5px 5px 0; }
+.edit-hint { margin: 0 0 10px; font-size: 13px; color: var(--muted); }
+.editing th, .editing td { padding-inline: 7px; }
+.editing td.creator { max-width: 120px; }
+.editing td.act .btn.small { padding: 3px 7px; }
+.edit-hint b { color: var(--fg); }
 tr.changed td.name::after { content: "수정됨"; font-size: 11px; color: var(--accent); margin-left: 8px; }
 
 /* 개인 난이도 순위 */
@@ -226,67 +235,75 @@ dialog h3 { font-family: var(--display); font-size: 20px; margin: 0; }
 
 <div id="app"></div>
 
-<script type="application/json" id="data">[{"key":"s0","date":"2025.09.13","name":"Through The Decay","creator":"sparktwo","tier":"Beginner","att":"2,205","wf":"55%","url":"https://youtu.be/nfpOYDcKElQ","gang":false,"priv":false,"nh":true,"unrated":false,"rank":61,"enj":9.1},
-{"key":"s1","date":"2025.09.23","name":"Acu","creator":"neigefeu","tier":"Beginner","att":"3,955","wf":"97%","url":"https://youtu.be/u2HgidOadew","gang":false,"priv":false,"nh":true,"unrated":false,"rank":58,"enj":8.7},
-{"key":"s2","date":"2025.11.05","name":"The Winged Sword","creator":"GKSolidality","tier":"Beginner","att":"2,133","wf":"89%","url":"https://youtu.be/waYAFQwo7Wg","gang":false,"priv":false,"nh":true,"unrated":false,"rank":55,"enj":4},
-{"key":"s3","date":"2025.11.13","name":"Cataclysm","creator":"Ggb0y & more","tier":"Beginner","att":"5,069+","wf":"100%","url":"https://youtu.be/Zx7TyEXyEPw","gang":false,"priv":false,"nh":false,"unrated":false,"rank":54,"enj":5.6},
-{"key":"s4","date":"2025.11.26","name":"Deception Dive","creator":"Rustam & more","tier":"Beginner","att":"2,367","wf":"87%","url":"https://youtu.be/UYx8GYwG18E","gang":false,"priv":false,"nh":false,"unrated":false,"rank":34,"enj":6.9},
-{"key":"s5","date":"2025.11.29","name":"Volume","creator":"Metalface221 & more","tier":"Easy","att":"3,199","wf":"98% x2","url":"https://youtu.be/8Ub2OOkmlP4","gang":false,"priv":false,"nh":false,"unrated":false,"rank":27,"enj":null},
-{"key":"s6","date":"2025.12.05","name":"Allegiance","creator":"nikroplays & more","tier":"Beginner","att":"2,089","wf":"97%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":35,"enj":null},
-{"key":"s7","date":"2025.12.17","name":"Azurite","creator":"Sillow","tier":"Beginner","att":"3,060+","wf":"52%","url":"https://youtu.be/jhoexKtOxaA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":36,"enj":null},
-{"key":"s8","date":"2025.12.30","name":"Incipient","creator":"Jenkins","tier":"Beginner","att":"1,878+","wf":"95%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":37,"enj":null},
-{"key":"s9","date":"2026.01.03","name":"The Lost Existence","creator":"JonathanGD","tier":"Beginner","att":"3,600+","wf":"100%","url":"https://youtu.be/Idnpp6Vzwr8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":38,"enj":null},
-{"key":"s10","date":"2026.01.05","name":"Penombre","creator":"ZephiroX","tier":"Beginner","att":"1,756","wf":"40%","url":"https://youtu.be/5YsmEh6bG8M","gang":false,"priv":false,"nh":false,"unrated":false,"rank":39,"enj":null},
-{"key":"s11","date":"2026.01.07","name":"Tesseract","creator":"iiLuna & more","tier":"Beginner","att":"4,101","wf":"91%","url":"https://youtu.be/Agwqw3jDcIY","gang":false,"priv":false,"nh":false,"unrated":false,"rank":40,"enj":null},
-{"key":"s12","date":"2026.01.12","name":"Forbidden Isle","creator":"Sillow","tier":"Beginner","att":"2,666","wf":"96%","url":"https://youtu.be/HGq0T5_saGM","gang":false,"priv":false,"nh":false,"unrated":false,"rank":41,"enj":null},
-{"key":"s13","date":"2026.01.18","name":"Polish Alphabet","creator":"Patchimator & more","tier":"Beginner","att":"1,502","wf":"86%","url":"https://youtu.be/K2zb7tAKly0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":42,"enj":null},
-{"key":"s14","date":"2026.01.22","name":"Redemption","creator":"Zestwagon, Cyclic","tier":"Beginner","att":"1,214+","wf":"90%","url":"https://youtu.be/WoGqKODRcqk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":43,"enj":null},
-{"key":"s15","date":"2026.01.25","name":"IDOL19","creator":"Youknowwho & more","tier":"Beginner","att":"1,891","wf":"78%","url":"https://youtu.be/o0135Y2gUwg","gang":false,"priv":false,"nh":false,"unrated":false,"rank":44,"enj":null},
-{"key":"s16","date":"2026.01.27","name":"Under lavaland","creator":"Inergy & more","tier":"Easy","att":"1,456","wf":"85%","url":"https://youtu.be/bEMb7fHSV5w","gang":false,"priv":false,"nh":false,"unrated":false,"rank":28,"enj":null},
-{"key":"s17","date":"2026.02.05","name":"Audio Extraction","creator":"GoodSmile & more","tier":"Medium","att":"2,460","wf":"90%","url":"https://youtu.be/1ntSzOKincU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":21,"enj":null},
-{"key":"s18","date":"2026.02.12","name":"CHROMA II","creator":"Renn241","tier":"Extreme","att":"6,563","wf":"81%","url":"https://youtu.be/wp40DbaAjFo","gang":false,"priv":false,"nh":false,"unrated":false,"rank":10,"enj":null},
-{"key":"s19","date":"2026.02.22","name":"Athanatos","creator":"Exenity & more","tier":"Insane","att":"7,585","wf":"93%","url":"https://youtu.be/Y5j-SUqqAGI","gang":false,"priv":false,"nh":false,"unrated":false,"rank":12,"enj":null},
-{"key":"s20","date":"2026.02.27","name":"Bloodbath","creator":"Riot & more","tier":"Very Hard","att":"7,474+","wf":"92%","url":"https://youtu.be/66rSehACJM8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":14,"enj":null},
-{"key":"s21","date":"2026.03.01","name":"The Flawless","creator":"Ryan & more","tier":"Easy","att":"1,694","wf":"93%","url":"https://youtu.be/n-uSVvyTXHk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":29,"enj":null},
-{"key":"s22","date":"2026.03.02","name":"SUBVERSIVE","creator":"Snow33re & more","tier":"Beginner","att":"???","wf":"60%","url":"https://youtu.be/9XssW6IrsQI","gang":false,"priv":false,"nh":false,"unrated":false,"rank":45,"enj":null},
-{"key":"s23","date":"2026.03.07","name":"aftermath","creator":"Exenity & more","tier":"Medium","att":"2,275","wf":"68%","url":"https://youtu.be/PERoBP55iC8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":22,"enj":null},
-{"key":"s24","date":"2026.03.08","name":"HyperSonic","creator":"ViPriN & more","tier":"Beginner","att":"1,997+","wf":"74%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":46,"enj":null},
-{"key":"s25","date":"2026.03.14","name":"Sonic Wave","creator":"Cyclic, zSunix","tier":"Relentless","att":"6,061","wf":"86%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":true,"unrated":false,"rank":3,"enj":null},
-{"key":"s26","date":"2026.03.21","name":"Shmarley Ville","creator":"Renn241, DrCuber","tier":"Relentless","att":"7,357","wf":"88%","url":"https://youtu.be/sgKJQt767Uw","gang":false,"priv":false,"nh":false,"unrated":false,"rank":4,"enj":null},
-{"key":"s27","date":"2026.04.02","name":"Delta Interface","creator":"Platnuu","tier":"Remorseless","att":"7,261+","wf":"100%","url":"https://youtu.be/SdiZjKQXcoE","gang":true,"priv":false,"nh":false,"unrated":false,"rank":6,"enj":null},
-{"key":"s28","date":"2026.04.10","name":"niflhel","creator":"IShardI","tier":"Beginner","att":"1,121+","wf":"90%","url":"https://youtu.be/BhSzDJyCBuw","gang":true,"priv":false,"nh":false,"unrated":false,"rank":47,"enj":null},
-{"key":"s29","date":"2026.04.13","name":"Sigma Interface","creator":"Platnuu, TeslaX","tier":"Hard","att":"~5,036","wf":"89%","url":"https://youtu.be/yEktHMUhMF8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":17,"enj":null},
-{"key":"s30","date":"2026.04.18","name":"Melancholy","creator":"Shulkern","tier":"Beginner","att":"1,100+","wf":"69%","url":"https://youtu.be/MQHQn3NyDsA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":48,"enj":null},
-{"key":"s31","date":"2026.04.20","name":"Light Travel","creator":"dongchi","tier":"Beginner","att":"2,500+","wf":"93%","url":"https://youtu.be/DQR1fG88SXk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":49,"enj":null},
-{"key":"s32","date":"2026.04.22","name":"Sakupen Hell","creator":"Noobas","tier":"Insane","att":"5,406+","wf":"85% x2","url":"https://youtu.be/3U9xAsZTxqs","gang":false,"priv":false,"nh":false,"unrated":false,"rank":13,"enj":null},
-{"key":"s33","date":"2026.04.23","name":"JeonGi","creator":"Lebi06 & more","tier":"Beginner","att":"1,280+","wf":"92% x4","url":"https://youtu.be/D1eq1Cjk8d4","gang":false,"priv":false,"nh":false,"unrated":false,"rank":50,"enj":null},
-{"key":"s34","date":"2026.04.26","name":"Prismatic","creator":"CatGeo","tier":"Beginner","att":"885+","wf":"59%","url":"https://youtu.be/qnN2LV8CxBk","gang":true,"priv":false,"nh":false,"unrated":false,"rank":51,"enj":null},
-{"key":"s35","date":"2026.05.01","name":"Twisted Tranquility","creator":"Flukester & more","tier":"Medium","att":"???","wf":"88% x3","url":"https://youtu.be/v64qVQ1_Oys","gang":false,"priv":false,"nh":false,"unrated":false,"rank":23,"enj":null},
-{"key":"s36","date":"2026.05.03","name":"I Cry","creator":"GrenadeofTacos","tier":"Remorseless","att":"4,147+","wf":"78%","url":"https://youtu.be/L1jr4x-71Aw","gang":true,"priv":false,"nh":true,"unrated":false,"rank":7,"enj":null},
-{"key":"s37","date":"2026.05.09","name":"Falling Up","creator":"KrmaL","tier":"Easy","att":"1,871+","wf":"93% x2","url":"https://youtu.be/OOHNEbFX4Go","gang":false,"priv":false,"nh":false,"unrated":false,"rank":30,"enj":null},
-{"key":"s38","date":"2026.05.10","name":"Just DANCE","creator":"Texic & more","tier":"Easy","att":"1,592","wf":"95%","url":"https://youtu.be/PYS_KdhMxu8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":31,"enj":null},
-{"key":"s39","date":"2026.05.15","name":"Intrusive ID","creator":"pasiblitz","tier":"Very Hard","att":"4,866+","wf":"67%","url":"https://youtu.be/sL7Spdm0Lhk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":15,"enj":null},
-{"key":"s40","date":"2026.05.16","name":"niwa","creator":"Teno & more","tier":"Beginner","att":"2,084","wf":"85%","url":"https://youtu.be/psAyjEsRWbs","gang":false,"priv":false,"nh":false,"unrated":false,"rank":52,"enj":null},
-{"key":"s41","date":"2026.05.26","name":"Friday Vortex","creator":"Cersia, declan","tier":"Relentless","att":"6,258","wf":"95%","url":"https://youtu.be/pL0y2UO4pGA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":5,"enj":null},
-{"key":"s42","date":"2026.05.30","name":"WaveBreaker","creator":"Lemons & more","tier":"Medium","att":"1,143+","wf":"56%","url":"https://youtu.be/Gnut1zocpBE","gang":false,"priv":false,"nh":false,"unrated":false,"rank":24,"enj":null},
-{"key":"s43","date":"2026.06.03","name":"Daybreak","creator":"ZenthicAlpha & more","tier":"Beginner","att":"1,296+","wf":"92%","url":"https://youtu.be/1XICaBeXbaA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":53,"enj":null},
-{"key":"s44","date":"2026.06.10","name":"Retention","creator":"WOOGI1411","tier":"Easy","att":"3,920+","wf":"69%","url":"https://youtu.be/vp8_s4uOLJo","gang":true,"priv":false,"nh":false,"unrated":false,"rank":32,"enj":null},
-{"key":"s45","date":"2026.06.12","name":"Bitcrusher","creator":"SleyGD","tier":"Remorseless","att":"9,884","wf":"92%","url":"https://youtu.be/m6u4mfNYfUQ","gang":false,"priv":false,"nh":false,"unrated":false,"rank":8,"enj":null},
-{"key":"s46","date":"2026.06.13","name":"Disruption","creator":"Ka1sa & more","tier":"Beginner","att":"809","wf":"78%","url":"https://youtu.be/amW0k11BoDc","gang":true,"priv":true,"nh":false,"unrated":false,"rank":56,"enj":null},
-{"key":"s47","date":"2026.06.18","name":"Wavetrip","creator":"BombCrafter2010","tier":"Beginner","att":"500+","wf":"72%","url":"https://youtu.be/GZ6oLfkxO_8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":57,"enj":null},
-{"key":"s48","date":"2026.06.21","name":"Hyper Paradox","creator":"ItsHybrid & more","tier":"Extreme","att":"3,688+","wf":"74%","url":"https://youtu.be/ehk8rtBeekE","gang":false,"priv":false,"nh":false,"unrated":false,"rank":11,"enj":null},
-{"key":"s49","date":"2026.06.25","name":"Auditory Breaker","creator":"Lazerblitz","tier":"Remorseless","att":"5,374+","wf":"81%","url":"https://youtu.be/DnE7t20ZrE0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":9,"enj":null},
-{"key":"s50","date":"2026.06.27","name":"Hyper Paracosm","creator":"iIiViRuZiIi & more","tier":"Terrifying","att":"4,167","wf":"62%","url":"https://youtu.be/6yLqsyeAC_U","gang":false,"priv":false,"nh":true,"unrated":false,"rank":2,"enj":null},
-{"key":"s51","date":"2026.07.10","name":"Arctic Lights","creator":"iIiViRuZiIi, Endlevel","tier":"Catastrophic","att":"8,366+","wf":"52%","url":"https://youtu.be/AnMYY9gHxKg","gang":false,"priv":false,"nh":true,"unrated":false,"rank":1,"enj":null},
-{"key":"s52","date":"2026.07.17","name":"9blue","creator":"Sardina & more","tier":"Beginner","att":"3,732","wf":"84%","url":"https://youtu.be/LOeMEzqeyos","gang":true,"priv":true,"nh":false,"unrated":false,"rank":59,"enj":null},
-{"key":"s53","date":"2026.07.19","name":"Heavens Door","creator":"TMco","tier":"Hard","att":"1,685+","wf":"70%","url":"https://youtu.be/sD_bO8M_6m0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":18,"enj":null},
-{"key":"s54","date":"2026.07.25","name":"Evangelion","creator":"Yoonsr & more","tier":"Medium","att":"1,850","wf":"95%","url":"https://youtu.be/BslHtNW6O-E","gang":false,"priv":false,"nh":false,"unrated":false,"rank":25,"enj":null},
-{"key":"s55","date":"2026.07.28","name":"A Bizarre Phantasm","creator":"TeamN2","tier":"Hard","att":"4,022","wf":"97%","url":"https://youtu.be/CV27G0uV-5I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":19,"enj":null},
-{"key":"s56","date":"2026.07.30","name":"SHINE","creator":"asmallsock","tier":"Easy","att":"1,821","wf":"92%","url":"https://youtu.be/g1z8r2h512I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":33,"enj":null},
-{"key":"s57","date":"2026.07.31","name":"Fexty","creator":"Ozpectro","tier":"Medium","att":"954","wf":"54%","url":"https://youtu.be/DPXUHvPYhf8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":26,"enj":null},
-{"key":"s58","date":"2026.08.01","name":"Prismatic Haze","creator":"Cirtrax, Gizbro","tier":"Hard","att":"2,353","wf":"97%","url":"https://youtu.be/eqQNfnDO-mU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":20,"enj":null},
-{"key":"s59","date":"2026.08.03","name":"BRUTAL","creator":"Tshack & more","tier":"Beginner","att":"1,627","wf":"89%","url":"https://youtu.be/DihFEaFI9EU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":60,"enj":null},
-{"key":"rmuxakcs0vdrz","date":"2026.08.13","name":"Asmodeus","creator":"Vexiion & more","tier":"Very Hard","att":"4,063","wf":"93%","url":"https://youtu.be/aV5beAOAo1I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":16,"enj":3.2}]</script>
+<script type="application/json" id="data">[{"key":"s0","date":"2025.09.13","name":"Through The Decay","creator":"sparktwo","tier":"Beginner","att":"2,205","wf":"55%","url":"https://youtu.be/nfpOYDcKElQ","gang":false,"priv":false,"nh":true,"unrated":false,"rank":69,"enj":9.1},
+{"key":"s1","date":"2025.09.23","name":"Acu","creator":"neigefeu","tier":"Beginner","att":"3,955","wf":"97%","url":"https://youtu.be/u2HgidOadew","gang":false,"priv":false,"nh":true,"unrated":false,"rank":66,"enj":8.7},
+{"key":"s2","date":"2025.11.05","name":"The Winged Sword","creator":"GKSolidality","tier":"Beginner","att":"2,133","wf":"89%","url":"https://youtu.be/waYAFQwo7Wg","gang":false,"priv":false,"nh":true,"unrated":false,"rank":58,"enj":4},
+{"key":"s3","date":"2025.11.13","name":"Cataclysm","creator":"Ggb0y & more","tier":"Beginner","att":"5,069+","wf":"100%","url":"https://youtu.be/Zx7TyEXyEPw","gang":false,"priv":false,"nh":false,"unrated":false,"rank":57,"enj":5.6},
+{"key":"s4","date":"2025.11.26","name":"Deception Dive","creator":"Rustam & more","tier":"Beginner","att":"2,367","wf":"87%","url":"https://youtu.be/UYx8GYwG18E","gang":false,"priv":false,"nh":false,"unrated":false,"rank":32,"enj":6.9},
+{"key":"s5","date":"2025.11.29","name":"Volume","creator":"Metalface221 & more","tier":"Easy","att":"3,199","wf":"98% x2","url":"https://youtu.be/8Ub2OOkmlP4","gang":false,"priv":false,"nh":true,"unrated":false,"rank":35,"enj":8.9},
+{"key":"s6","date":"2025.12.05","name":"Allegiance","creator":"nikroplays & more","tier":"Beginner","att":"2,089","wf":"97%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":46,"enj":7.7},
+{"key":"s7","date":"2025.12.17","name":"Azurite","creator":"Sillow","tier":"Beginner","att":"3,060+","wf":"52%","url":"https://youtu.be/jhoexKtOxaA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":54,"enj":8.9},
+{"key":"s8","date":"2025.12.30","name":"Incipient","creator":"Jenkins","tier":"Beginner","att":"1,878+","wf":"95%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":37,"enj":7.2},
+{"key":"s9","date":"2026.01.03","name":"The Lost Existence","creator":"JonathanGD","tier":"Beginner","att":"3,600+","wf":"100%","url":"https://youtu.be/Idnpp6Vzwr8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":38,"enj":9.1},
+{"key":"s10","date":"2026.01.05","name":"Penombre","creator":"ZephiroX","tier":"Beginner","att":"1,756","wf":"40%","url":"https://youtu.be/5YsmEh6bG8M","gang":false,"priv":false,"nh":false,"unrated":false,"rank":51,"enj":8.6},
+{"key":"s11","date":"2026.01.07","name":"Tesseract","creator":"iiLuna & more","tier":"Beginner","att":"4,101","wf":"91%","url":"https://youtu.be/Agwqw3jDcIY","gang":false,"priv":false,"nh":false,"unrated":false,"rank":40,"enj":5.8},
+{"key":"s12","date":"2026.01.12","name":"Forbidden Isle","creator":"Sillow","tier":"Beginner","att":"2,666","wf":"96%","url":"https://youtu.be/HGq0T5_saGM","gang":false,"priv":false,"nh":false,"unrated":false,"rank":41,"enj":2.6},
+{"key":"s13","date":"2026.01.18","name":"Polish Alphabet","creator":"Patchimator & more","tier":"Beginner","att":"1,502","wf":"86%","url":"https://youtu.be/K2zb7tAKly0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":44,"enj":7.2},
+{"key":"s14","date":"2026.01.22","name":"Redemption","creator":"Zestwagon, Cyclic","tier":"Beginner","att":"1,214+","wf":"90%","url":"https://youtu.be/WoGqKODRcqk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":52,"enj":6.5},
+{"key":"s15","date":"2026.01.25","name":"IDOL19","creator":"Youknowwho & more","tier":"Beginner","att":"1,891","wf":"78%","url":"https://youtu.be/o0135Y2gUwg","gang":false,"priv":false,"nh":false,"unrated":false,"rank":39,"enj":9.3},
+{"key":"s16","date":"2026.01.27","name":"Under lavaland","creator":"Inergy & more","tier":"Easy","att":"1,456","wf":"85%","url":"https://youtu.be/bEMb7fHSV5w","gang":false,"priv":false,"nh":false,"unrated":false,"rank":43,"enj":1.7},
+{"key":"s17","date":"2026.02.05","name":"Audio Extraction","creator":"GoodSmile & more","tier":"Medium","att":"2,460","wf":"90%","url":"https://youtu.be/1ntSzOKincU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":21,"enj":2.2},
+{"key":"s18","date":"2026.02.12","name":"CHROMA II","creator":"Renn241","tier":"Extreme","att":"6,563","wf":"81%","url":"https://youtu.be/wp40DbaAjFo","gang":false,"priv":false,"nh":false,"unrated":false,"rank":12,"enj":9.4},
+{"key":"s19","date":"2026.02.22","name":"Athanatos","creator":"Exenity & more","tier":"Insane","att":"7,585","wf":"93%","url":"https://youtu.be/Y5j-SUqqAGI","gang":false,"priv":false,"nh":false,"unrated":false,"rank":11,"enj":9.1},
+{"key":"s20","date":"2026.02.27","name":"Bloodbath","creator":"Riot & more","tier":"Very Hard","att":"7,474+","wf":"92%","url":"https://youtu.be/66rSehACJM8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":16,"enj":5.9},
+{"key":"s21","date":"2026.03.01","name":"The Flawless","creator":"Ryan & more","tier":"Easy","att":"1,694","wf":"93%","url":"https://youtu.be/n-uSVvyTXHk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":34,"enj":4.7},
+{"key":"s22","date":"2026.03.02","name":"SUBVERSIVE","creator":"Snow33re & more","tier":"Beginner","att":"???","wf":"60%","url":"https://youtu.be/9XssW6IrsQI","gang":false,"priv":false,"nh":false,"unrated":false,"rank":31,"enj":0.2},
+{"key":"s23","date":"2026.03.07","name":"aftermath","creator":"Exenity & more","tier":"Medium","att":"2,275","wf":"68%","url":"https://youtu.be/PERoBP55iC8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":22,"enj":5.7},
+{"key":"s24","date":"2026.03.08","name":"HyperSonic","creator":"ViPriN & more","tier":"Beginner","att":"1,997+","wf":"74%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":49,"enj":8.9},
+{"key":"s25","date":"2026.03.14","name":"Sonic Wave","creator":"Cyclic, zSunix","tier":"Relentless","att":"6,061","wf":"86%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":true,"unrated":false,"rank":4,"enj":10},
+{"key":"s26","date":"2026.03.21","name":"Shmarley Ville","creator":"Renn241, DrCuber","tier":"Relentless","att":"7,357","wf":"88%","url":"https://youtu.be/sgKJQt767Uw","gang":false,"priv":false,"nh":false,"unrated":false,"rank":5,"enj":10},
+{"key":"s27","date":"2026.04.02","name":"Delta Interface","creator":"Platnuu","tier":"Remorseless","att":"7,261+","wf":"100%","url":"https://youtu.be/SdiZjKQXcoE","gang":true,"priv":false,"nh":false,"unrated":false,"rank":7,"enj":9.8},
+{"key":"s28","date":"2026.04.10","name":"niflhel","creator":"IShardI","tier":"Beginner","att":"1,121+","wf":"90%","url":"https://youtu.be/BhSzDJyCBuw","gang":true,"priv":false,"nh":false,"unrated":false,"rank":48,"enj":6.7},
+{"key":"s29","date":"2026.04.13","name":"Sigma Interface","creator":"Platnuu, TeslaX","tier":"Hard","att":"~5,036","wf":"89%","url":"https://youtu.be/yEktHMUhMF8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":18,"enj":7.9},
+{"key":"s30","date":"2026.04.18","name":"Melancholy","creator":"Shulkern","tier":"Beginner","att":"1,100+","wf":"69%","url":"https://youtu.be/MQHQn3NyDsA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":53,"enj":6.8},
+{"key":"s31","date":"2026.04.20","name":"Light Travel","creator":"dongchi","tier":"Beginner","att":"2,500+","wf":"93%","url":"https://youtu.be/DQR1fG88SXk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":45,"enj":9.9},
+{"key":"s32","date":"2026.04.22","name":"Sakupen Hell","creator":"Noobas","tier":"Insane","att":"5,406+","wf":"85% x2","url":"https://youtu.be/3U9xAsZTxqs","gang":false,"priv":false,"nh":false,"unrated":false,"rank":15,"enj":2.6},
+{"key":"s33","date":"2026.04.23","name":"JeonGi","creator":"Lebi06 & more","tier":"Beginner","att":"1,280+","wf":"92% x4","url":"https://youtu.be/D1eq1Cjk8d4","gang":false,"priv":false,"nh":false,"unrated":false,"rank":55,"enj":7.5},
+{"key":"s34","date":"2026.04.26","name":"Prismatic","creator":"CatGeo","tier":"Beginner","att":"885+","wf":"59%","url":"https://youtu.be/qnN2LV8CxBk","gang":true,"priv":false,"nh":false,"unrated":false,"rank":56,"enj":9.4},
+{"key":"s35","date":"2026.05.01","name":"Twisted Tranquility","creator":"Flukester & more","tier":"Medium","att":"???","wf":"88% x3","url":"https://youtu.be/v64qVQ1_Oys","gang":false,"priv":false,"nh":false,"unrated":false,"rank":25,"enj":5.6},
+{"key":"s36","date":"2026.05.03","name":"I Cry","creator":"GrenadeofTacos","tier":"Remorseless","att":"4,147+","wf":"78%","url":"https://youtu.be/L1jr4x-71Aw","gang":true,"priv":false,"nh":true,"unrated":false,"rank":8,"enj":8.7},
+{"key":"s37","date":"2026.05.09","name":"Falling Up","creator":"KrmaL","tier":"Easy","att":"1,871+","wf":"93% x2","url":"https://youtu.be/OOHNEbFX4Go","gang":false,"priv":false,"nh":false,"unrated":false,"rank":29,"enj":8},
+{"key":"s38","date":"2026.05.10","name":"Just DANCE","creator":"Texic & more","tier":"Easy","att":"1,592","wf":"95%","url":"https://youtu.be/PYS_KdhMxu8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":30,"enj":4.7},
+{"key":"s39","date":"2026.05.15","name":"Intrusive ID","creator":"pasiblitz","tier":"Very Hard","att":"4,866+","wf":"67%","url":"https://youtu.be/sL7Spdm0Lhk","gang":false,"priv":false,"nh":false,"unrated":false,"rank":13,"enj":7.6},
+{"key":"s40","date":"2026.05.16","name":"niwa","creator":"Teno & more","tier":"Beginner","att":"2,084","wf":"85%","url":"https://youtu.be/psAyjEsRWbs","gang":false,"priv":false,"nh":false,"unrated":false,"rank":65,"enj":9.8},
+{"key":"s41","date":"2026.05.26","name":"Friday Vortex","creator":"Cersia, declan","tier":"Relentless","att":"6,258","wf":"95%","url":"https://youtu.be/pL0y2UO4pGA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":6,"enj":9.7},
+{"key":"s42","date":"2026.05.30","name":"WaveBreaker","creator":"Lemons & more","tier":"Medium","att":"1,143+","wf":"56%","url":"https://youtu.be/Gnut1zocpBE","gang":false,"priv":false,"nh":false,"unrated":false,"rank":24,"enj":3.1},
+{"key":"s43","date":"2026.06.03","name":"Daybreak","creator":"ZenthicAlpha & more","tier":"Beginner","att":"1,296+","wf":"92%","url":"https://youtu.be/1XICaBeXbaA","gang":false,"priv":false,"nh":false,"unrated":false,"rank":33,"enj":0.1},
+{"key":"s44","date":"2026.06.10","name":"Retention","creator":"WOOGI1411","tier":"Easy","att":"3,920+","wf":"69%","url":"https://youtu.be/vp8_s4uOLJo","gang":true,"priv":false,"nh":false,"unrated":false,"rank":36,"enj":9.6},
+{"key":"s45","date":"2026.06.12","name":"Bitcrusher","creator":"SleyGD","tier":"Remorseless","att":"9,884","wf":"92%","url":"https://youtu.be/m6u4mfNYfUQ","gang":false,"priv":false,"nh":false,"unrated":false,"rank":3,"enj":6.4},
+{"key":"s46","date":"2026.06.13","name":"Disruption","creator":"Ka1sa & more","tier":"Beginner","att":"809","wf":"78%","url":"https://youtu.be/amW0k11BoDc","gang":true,"priv":false,"nh":false,"unrated":false,"rank":61,"enj":8.6},
+{"key":"s47","date":"2026.06.18","name":"Wavetrip","creator":"BombCrafter2010","tier":"Beginner","att":"500+","wf":"72%","url":"https://youtu.be/GZ6oLfkxO_8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":62,"enj":0.2},
+{"key":"s48","date":"2026.06.21","name":"Hyper Paradox","creator":"ItsHybrid & more","tier":"Extreme","att":"3,688+","wf":"74%","url":"https://youtu.be/ehk8rtBeekE","gang":false,"priv":false,"nh":false,"unrated":false,"rank":10,"enj":8.7},
+{"key":"s49","date":"2026.06.25","name":"Auditory Breaker","creator":"Lazerblitz","tier":"Remorseless","att":"5,374+","wf":"81%","url":"https://youtu.be/DnE7t20ZrE0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":9,"enj":9.8},
+{"key":"s50","date":"2026.06.27","name":"Hyper Paracosm","creator":"iIiViRuZiIi & more","tier":"Terrifying","att":"4,167","wf":"62%","url":"https://youtu.be/6yLqsyeAC_U","gang":false,"priv":false,"nh":true,"unrated":false,"rank":2,"enj":8.6},
+{"key":"s51","date":"2026.07.10","name":"Arctic Lights","creator":"iIiViRuZiIi, Endlevel","tier":"Catastrophic","att":"8,366+","wf":"52%","url":"https://youtu.be/AnMYY9gHxKg","gang":false,"priv":false,"nh":true,"unrated":false,"rank":1,"enj":9.9},
+{"key":"s52","date":"2026.07.17","name":"9blue","creator":"Sardina & more","tier":"Beginner","att":"3,732","wf":"84%","url":"https://youtu.be/LOeMEzqeyos","gang":true,"priv":false,"nh":false,"unrated":false,"rank":67,"enj":7.5},
+{"key":"s53","date":"2026.07.19","name":"Heavens Door","creator":"TMco","tier":"Hard","att":"1,685+","wf":"70%","url":"https://youtu.be/sD_bO8M_6m0","gang":false,"priv":false,"nh":false,"unrated":false,"rank":20,"enj":9.3},
+{"key":"s54","date":"2026.07.25","name":"Evangelion","creator":"Yoonsr & more","tier":"Medium","att":"1,850","wf":"95%","url":"https://youtu.be/BslHtNW6O-E","gang":false,"priv":false,"nh":false,"unrated":false,"rank":27,"enj":3.5},
+{"key":"s55","date":"2026.07.28","name":"A Bizarre Phantasm","creator":"TeamN2","tier":"Hard","att":"4,022","wf":"97%","url":"https://youtu.be/CV27G0uV-5I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":19,"enj":10},
+{"key":"s56","date":"2026.07.30","name":"SHINE","creator":"asmallsock","tier":"Easy","att":"1,821","wf":"92%","url":"https://youtu.be/g1z8r2h512I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":42,"enj":8.6},
+{"key":"s57","date":"2026.07.31","name":"Fexty","creator":"Ozpectro","tier":"Medium","att":"954","wf":"54%","url":"https://youtu.be/DPXUHvPYhf8","gang":false,"priv":false,"nh":false,"unrated":false,"rank":28,"enj":8.9},
+{"key":"s58","date":"2026.08.01","name":"Prismatic Haze","creator":"Cirtrax, Gizbro","tier":"Hard","att":"2,353","wf":"97%","url":"https://youtu.be/eqQNfnDO-mU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":17,"enj":9.1},
+{"key":"s59","date":"2026.08.03","name":"BRUTAL","creator":"Tshack & more","tier":"Beginner","att":"1,627","wf":"89%","url":"https://youtu.be/DihFEaFI9EU","gang":false,"priv":false,"nh":false,"unrated":false,"rank":68,"enj":9.7},
+{"key":"rmuxakcs0vdrz","date":"2026.08.13","name":"Asmodeus","creator":"Vexiion & more","tier":"Very Hard","att":"4,063","wf":"93%","url":"https://youtu.be/aV5beAOAo1I","gang":false,"priv":false,"nh":false,"unrated":false,"rank":14,"enj":3.2},
+{"key":"rmuxb6y778bid","date":"2026.08.15","name":"Mystic Bounds","creator":"gmdmann","tier":"Beginner","att":"1,553","wf":"56%","url":"https://youtu.be/5UUKgvxJZlY?si=weUjP-fcCYpt8_Ea","gang":false,"priv":false,"nh":false,"unrated":false,"rank":47,"enj":9.8},
+{"key":"rmuxb81cfng3v","date":"2026.08.17","name":"Mizureta","creator":"dutchiee & more","tier":"Beginner","att":"2,192","wf":"70%","url":"https://youtu.be/DRlPDDwdjIg?si=o0Pgc_1LMeJG7yxD","gang":false,"priv":false,"nh":false,"unrated":false,"rank":50,"enj":3.5},
+{"key":"rmuxbc0uzp1ik","date":"2026.08.21","name":"Esencia","creator":"Zafkiel7 & more","tier":"Medium","att":"~6,000","wf":"98%","url":"https://youtu.be/xbVwvl3h-v0?si=x2jLcG8LQE_dpSjo","gang":false,"priv":false,"nh":false,"unrated":false,"rank":23,"enj":10},
+{"key":"rmuxb8qsj9yr4","date":"2026.08.22","name":"ChloroPhyll","creator":"luhlamar","tier":"Beginner","att":"982","wf":"66%","url":"https://youtu.be/orwsWfKAihA?si=TVmum1bdGdzbAMRi","gang":false,"priv":false,"nh":false,"unrated":false,"rank":63,"enj":5},
+{"key":"rmuxbaiwib3rt","date":"2026.08.22","name":"rauchkammer","creator":"Devilmine","tier":"Beginner","att":"563","wf":"91%","url":"https://youtu.be/1nLy_aN5k70?si=GBQthMtvDfcxsGW3","gang":false,"priv":false,"nh":false,"unrated":false,"rank":64,"enj":0},
+{"key":"rmuxbhmmd8o29","date":"2026.08.22","name":"FULLPOWER","creator":"xSlendy","tier":"Easy","att":"562","wf":"87%","url":"https://youtu.be/f88cjXkWs18?si=EeENJKdvMAbtA5VS","gang":true,"priv":true,"nh":false,"unrated":false,"rank":60,"enj":10},
+{"key":"rmuxbd8zmug76","date":"2026.08.24","name":"Cat Planet","creator":"IcEDCave","tier":"Medium","att":"1,433","wf":"94% x2","url":"https://youtu.be/MaFfXAks-ds?si=LaFoDGfTF4XLRFh5","gang":false,"priv":false,"nh":false,"unrated":false,"rank":26,"enj":0.1},
+{"key":"rmuxbezjtsx57","date":"2026.08.29","name":"Raindance","creator":"Milos482 & more","tier":"Beginner","att":"781","wf":"46%","url":"https://youtu.be/bxGK_YtZ_ws?si=x4UHh0Lq1goZda99","gang":false,"priv":false,"nh":false,"unrated":false,"rank":59,"enj":4.5}]</script>
 
 <script id="main">
 // 기록은 위의 #data 블록에 들어 있습니다. 편집 모드에서 고친 뒤 저장하면, 페이지가 그 기록으로 자기 자신을 새 버전으로 다시 게시합니다.
@@ -335,6 +352,7 @@ const SHELL = `
       </div>
       <span class="count" id="count"></span>
     </div>
+    <p class="edit-hint" id="editHint" hidden>같은 날 깬 맵이 여러 개면 <b>날짜순</b> 보기에서 ▲▼ 버튼으로 그날 안의 순서를 바꿀 수 있습니다. 위에 있을수록 나중에 깬 맵입니다.</p>
     <div class="table-box" id="tableBox">
       <table>
         <thead><tr>
@@ -522,6 +540,26 @@ const SORTERS = {
   rank: (a, b) => a.rank - b.rank,
 };
 
+// 같은 날 깬 맵들의 순서 (날짜순 보기에서만, 위 = 나중에 깬 것)
+function dayButtons(l) {
+  if (state.sort !== "date") return "";
+  const group = levels.filter(x => x.date === l.date);
+  if (group.length < 2) return "";
+  const i = group.indexOf(l);
+  return `<span class="day" title="같은 날 안에서 순서 바꾸기"><button class="btn small" data-day="${esc(l.key)}" data-dir="1" aria-label="같은 날 안에서 위로"${i === group.length - 1 ? " disabled" : ""}>▲</button><button class="btn small" data-day="${esc(l.key)}" data-dir="-1" aria-label="같은 날 안에서 아래로"${i === 0 ? " disabled" : ""}>▼</button></span>`;
+}
+function moveSameDay(key, dir) {
+  const l = levels.find(x => x.key === key); if (!l) return;
+  const group = levels.filter(x => x.date === l.date);
+  const other = group[group.indexOf(l) + dir]; if (!other) return;
+  const a = records.findIndex(r => r.key === l.key), b = records.findIndex(r => r.key === other.key);
+  [records[a], records[b]] = [records[b], records[a]];
+  changedKeys.add(l.key); changedKeys.add(other.key);
+  update();
+  const btn = document.querySelector(`[data-day="${CSS.escape(key)}"][data-dir="${dir}"]`);
+  (btn && !btn.disabled ? btn : document.querySelector(`[data-day="${CSS.escape(key)}"]:not([disabled])`))?.focus();
+}
+
 function renderRows() {
   const q = state.q.trim().toLowerCase();
   let list = levels.filter(l =>
@@ -554,7 +592,7 @@ function renderRows() {
       <td class="num wf${bold ? " fluke" : ""}"${l.fluke ? ' title="플루크"' : l.reclear ? ' title="재클리어"' : ""}>${wfText}</td>
       <td class="num enjc">${enj}</td>
       <td class="vid">${vid}</td>
-      <td class="act"><button class="btn small" data-edit="${esc(l.key)}">수정</button><button class="btn small danger" data-del="${esc(l.key)}">삭제</button></td>
+      <td class="act">${dayButtons(l)}<button class="btn small" data-edit="${esc(l.key)}">수정</button><button class="btn small danger" data-del="${esc(l.key)}">삭제</button></td>
     </tr>`;
   }).join("");
 }
@@ -654,6 +692,8 @@ $("#okBtn").addEventListener("click", e => {
 });
 
 $("#rows").addEventListener("click", e => {
+  const day = e.target.closest("[data-day]");
+  if (day) return moveSameDay(day.dataset.day, +day.dataset.dir);
   const ed = e.target.closest("[data-edit]");
   if (ed) return openForm(ed.dataset.edit);
   const del = e.target.closest("[data-del]");
@@ -812,6 +852,7 @@ function setEditing(on) {
   $("#editBtn").setAttribute("aria-pressed", on);
   $("#editBtn").textContent = on ? "편집 끝내기" : "편집";
   $("#tableBox").classList.toggle("editing", on);
+  $("#editHint").hidden = !on;
   renderSaveBar();
 }
 $("#editBtn").addEventListener("click", () => {
