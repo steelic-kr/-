@@ -1,0 +1,856 @@
+<title>Extreme Demon 클리어 기록</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style id="page-style">
+/* Layout: 기록부 — 요약 숫자 한 줄, 티어 분포 막대, 그 아래 필터와 클리어 목록 (좁은 화면에서는 행이 카드로). 편집 모드에서는 행마다 수정·삭제, 아래에 저장 막대 */
+:root {
+  --bg: #eef0f5;
+  --surface: #ffffff;
+  --line: #d9dce6;
+  --fg: #171a26;
+  --muted: #5f6577;
+  --accent: #d0263b;      /* 익스트림 데몬 얼굴의 붉은색 */
+  --gang: #1a66e0;        /* 갱 = 파란 글자 */
+  --hover: #f3f5fa;
+  --chip-ink: #ffffff;
+  --shadow: 0 10px 40px rgba(20, 24, 40, .18);
+  --display: "Oxanium", "IBM Plex Sans KR", system-ui, sans-serif;
+  --body: "IBM Plex Sans KR", system-ui, -apple-system, "Malgun Gothic", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10121b; --surface: #171a26; --line: #2a2f40; --fg: #e8eaf2; --muted: #9298ab;
+    --accent: #ff5167; --gang: #6ea2ff; --hover: #1d2130; --chip-ink: #10121b; --shadow: 0 10px 40px rgba(0,0,0,.5); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10121b; --surface: #171a26; --line: #2a2f40; --fg: #e8eaf2; --muted: #9298ab;
+  --accent: #ff5167; --gang: #6ea2ff; --hover: #1d2130; --chip-ink: #10121b; --shadow: 0 10px 40px rgba(0,0,0,.5); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 96px; display: grid; gap: 28px; }
+.wrap > * { min-width: 0; }
+
+header { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: end; }
+header > div { display: grid; gap: 6px; min-width: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 5vw, 46px); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 0; }
+.head-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn { font: inherit; font-size: 14px; font-weight: 500; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 7px 14px; cursor: pointer; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { filter: brightness(1.08); color: #fff; }
+.btn.on { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.small { font-size: 12.5px; padding: 3px 9px; border-radius: 5px; }
+.btn.danger:hover { border-color: var(--accent); color: var(--accent); }
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.stat { background: var(--surface); padding: 16px 18px; display: grid; gap: 2px; min-width: 0; }
+.stat .k { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.stat .v { font-family: var(--display); font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.15; overflow-wrap: anywhere; }
+.stat .v small { font-size: 14px; font-weight: 500; color: var(--muted); }
+.stat .note { font-size: 12.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+section > h2 { font-family: var(--display); font-size: 18px; font-weight: 700; margin: 0 0 12px; display: flex; align-items: baseline; gap: 10px; }
+section > h2 span { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--muted); }
+
+.tiers { display: grid; gap: 6px; }
+.tier-row { display: grid; grid-template-columns: 110px 1fr 34px; align-items: center; gap: 10px; font-size: 13px; background: none; border: 0; padding: 2px 0; color: inherit; font: inherit; text-align: left; cursor: pointer; border-radius: 4px; }
+.tier-row:hover .bar-track { background: var(--hover); }
+.tier-row.on .tname { font-weight: 700; }
+.tier-row.dim { opacity: .4; }
+.tname { color: var(--fg); white-space: nowrap; }
+.bar-track { height: 14px; border-radius: 3px; position: relative; }
+.bar { height: 100%; border-radius: 3px; min-width: 3px; }
+.tcount { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); padding: 12px 14px; border: 1px dashed var(--line); border-radius: 8px; }
+.legend b, .legend .g, .legend s { color: var(--fg); }
+.legend .g { color: var(--gang); }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.controls input[type=search], .controls select { font: inherit; font-size: 14px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; }
+.controls input[type=search] { flex: 1 1 220px; min-width: 0; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; user-select: none; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; background: var(--surface); }
+.seg button { font: inherit; font-size: 13.5px; color: var(--muted); background: none; border: 0; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button:hover { color: var(--fg); background: var(--hover); }
+.seg button[aria-checked="true"] { background: var(--fg); color: var(--bg); font-weight: 700; }
+.count { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-left: auto; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.table-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 10px; text-align: left; white-space: nowrap; }
+thead th { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .04em; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); }
+thead th button { all: unset; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+thead th button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+thead th .arr { opacity: 0; font-size: 10px; }
+thead th.sorted .arr { opacity: 1; color: var(--accent); }
+tbody tr { border-top: 1px solid var(--line); }
+tbody tr:first-child { border-top: 0; }
+tbody tr:hover { background: var(--hover); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+td.idx { color: var(--muted); font-size: 12.5px; }
+td.date { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.lvl { font-weight: 500; font-size: 15px; }
+.lvl.nh { font-weight: 700; }
+.lvl.gang { color: var(--gang); }
+.lvl.private { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+.creator { color: var(--muted); max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+.chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: var(--chip-ink); white-space: nowrap; }
+.wf.fluke { font-weight: 700; }
+.wf .x { color: var(--muted); font-size: 12px; margin-left: 3px; font-weight: 400; }
+.badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; border: 1px solid currentColor; color: var(--accent); border-radius: 3px; padding: 0 4px; margin-left: 6px; vertical-align: 2px; }
+.play { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--fg); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px 4px 9px; }
+.play:hover { border-color: var(--accent); color: var(--accent); }
+.play svg { width: 11px; height: 11px; fill: currentColor; }
+.play.locked { color: var(--muted); border-style: dashed; }
+.novid { color: var(--muted); font-size: 13px; }
+.empty { padding: 32px; text-align: center; color: var(--muted); }
+td.act { display: none; }
+.editing td.act, .editing th.act { display: table-cell; }
+th.act { display: none; }
+td.act { text-align: right; }
+td.act .btn + .btn { margin-left: 6px; }
+tr.changed td.name::after { content: "수정됨"; font-size: 11px; color: var(--accent); margin-left: 8px; }
+
+/* 개인 난이도 순위 */
+td.rk { padding-right: 0; }
+.rk-n { display: inline-grid; place-items: center; min-width: 30px; height: 24px; padding: 0 6px; border-radius: 6px; background: var(--hover); border: 1px solid var(--line); font-family: var(--mono); font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rk-n.top { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Enjoyment */
+.enj { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.enj-bar { width: 44px; height: 5px; border-radius: 3px; background: var(--hover); border: 1px solid var(--line); overflow: hidden; }
+.enj-bar i { display: block; height: 100%; background: var(--gang); }
+.enj.none { color: var(--muted); }
+
+/* Unrated: 회색으로 구분, 개수에서 빠짐 */
+tr.unrated td, tr.unrated .lvl, tr.unrated .lvl.gang { color: var(--muted); }
+tr.unrated .chip { background: var(--line) !important; color: var(--muted) !important; }
+tr.unrated .rk-n { opacity: .6; }
+.ur { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; border: 1px solid var(--muted); color: var(--muted); border-radius: 3px; padding: 0 4px; margin-left: 6px; vertical-align: 2px; }
+.legend .u { color: var(--muted); }
+
+/* 순위 정하기 창 */
+#rankDlg { width: min(480px, calc(100% - 32px)); }
+#rankDlg .inner { display: grid; gap: 12px; padding: 20px; }
+#rankDlg p { margin: 0; font-size: 13px; color: var(--muted); }
+.rank-list { list-style: none; margin: 0; padding: 4px; max-height: min(60vh, 520px); overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); display: grid; gap: 3px; overscroll-behavior: contain; }
+.rank-list li { display: grid; grid-template-columns: 26px 34px 1fr auto; align-items: center; gap: 8px; padding: 6px 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; font-size: 14px; user-select: none; cursor: grab; }
+.rank-list li .grip { color: var(--muted); font-size: 15px; line-height: 1; text-align: center; touch-action: none; cursor: grab; padding: 4px 0; }
+.rank-list li .no { font-family: var(--mono); font-size: 12.5px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.rank-list li .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-list li .tr { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.rank-list li.me { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+.rank-list li.me .no { color: var(--accent); }
+.rank-list li.dragging { opacity: .85; box-shadow: var(--shadow); border-color: var(--accent); cursor: grabbing; position: relative; z-index: 1; }
+.rank-list li:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.rank-tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rank-tools .btn { padding: 5px 10px; font-size: 13px; }
+.rank-field { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; color: var(--fg); }
+.rank-field b { font-family: var(--mono); }
+
+footer { font-size: 12.5px; color: var(--muted); }
+
+/* 저장 막대 */
+.savebar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(640px, calc(100% - 32px)); display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 10px 16px; box-shadow: var(--shadow); z-index: 5; }
+.savebar .msg { flex: 1 1 200px; font-size: 14px; min-width: 0; }
+.savebar .msg b { color: var(--accent); }
+
+/* 수정 창 */
+dialog { border: 1px solid var(--line); border-radius: 12px; padding: 0; background: var(--surface); color: var(--fg); width: min(560px, calc(100% - 32px)); box-shadow: var(--shadow); }
+dialog::backdrop { background: rgba(10, 12, 20, .45); }
+dialog form { display: grid; gap: 14px; padding: 20px; }
+dialog h3 { font-family: var(--display); font-size: 20px; margin: 0; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fields label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); min-width: 0; }
+.fields label.full { grid-column: 1 / -1; }
+.fields input, .fields select { font: inherit; font-size: 15px; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; width: 100%; min-width: 0; }
+.fields .hint { font-size: 12px; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.checks .toggle { color: var(--fg); }
+.dlg-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.err { color: var(--accent); font-size: 13px; margin: 0; min-height: 1em; }
+
+@media (max-width: 760px) {
+  header { grid-template-columns: 1fr; }
+  header .btn { justify-self: start; }
+  .tier-row { grid-template-columns: 92px 1fr 28px; }
+  .table-box { background: none; border: 0; overflow: visible; }
+  table, tbody { display: block; }
+  thead { display: none; }
+  tbody tr { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  tbody tr:first-child { border-top: 1px solid var(--line); }
+  td { padding: 0; white-space: normal; }
+  td.idx { display: none; }
+  td.rk { grid-column: 1; grid-row: 1; align-self: center; }
+  td.name { grid-column: 2; grid-row: 1; min-width: 0; align-self: center; }
+  td.tier { grid-column: 3; grid-row: 1; text-align: right; align-self: center; }
+  td.creator { grid-column: 1 / -1; grid-row: 2; max-width: none; font-size: 13px; }
+  td.date { grid-column: 1 / -1; grid-row: 3; font-size: 12.5px; }
+  td.att, td.wf, td.enjc { text-align: left; font-size: 13px; grid-column: 1 / 3; }
+  td.att { grid-row: 4; }
+  td.wf { grid-row: 5; }
+  td.enjc { grid-row: 6; }
+  .enj { justify-content: flex-start; }
+  td.att::before { content: "어템 "; color: var(--muted); font-family: var(--body); }
+  td.wf::before { content: "Worst Fail "; color: var(--muted); font-family: var(--body); font-weight: 400; }
+  td.enjc::before { content: "Enjoyment "; color: var(--muted); font-family: var(--body); font-size: 13px; margin-right: 6px; }
+  td.enjc { display: flex; align-items: center; }
+  td.vid { grid-column: 3; grid-row: 4 / 7; align-self: end; }
+  td.date::after { content: attr(data-n); margin-left: 8px; }
+  .editing td.act { display: block; grid-column: 1 / -1; grid-row: 7; text-align: left; padding-top: 6px; border-top: 1px dashed var(--line); margin-top: 4px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .fields { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bar { transition: width .5s ease; }
+}
+</style>
+
+<div id="app"></div>
+
+<script type="application/json" id="data">[{"key":"s0","date":"2025.09.13","name":"Through The Decay","creator":"sparktwo","tier":"Beginner","att":"2,205","wf":"55%","url":"https://youtu.be/nfpOYDcKElQ","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":33},
+{"key":"s1","date":"2025.09.23","name":"Acu","creator":"neigefeu","tier":"Beginner","att":"3,955","wf":"97%","url":"https://youtu.be/u2HgidOadew","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":34},
+{"key":"s2","date":"2025.11.05","name":"The Winged Sword","creator":"Will1","tier":"Beginner","att":"2,133","wf":"89%","url":"https://youtu.be/waYAFQwo7Wg","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":35},
+{"key":"s3","date":"2025.11.13","name":"Cataclysm","creator":"Ggb0y & more","tier":"Beginner","att":"5,069+","wf":"100%","url":"https://youtu.be/Zx7TyEXyEPw","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":36},
+{"key":"s4","date":"2025.11.26","name":"Deception Dive","creator":"Rustam & more","tier":"Beginner","att":"2,367","wf":"87%","url":"https://youtu.be/UYx8GYwG18E","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":37},
+{"key":"s5","date":"2025.11.29","name":"Volume","creator":"Metalface221 & more","tier":"Easy","att":"3,199","wf":"98% x2","url":"https://youtu.be/8Ub2OOkmlP4","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":26},
+{"key":"s6","date":"2025.12.05","name":"Allegiance","creator":"nikroplays & more","tier":"Beginner","att":"2,089","wf":"97%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":38},
+{"key":"s7","date":"2025.12.17","name":"Azurite","creator":"Sillow","tier":"Beginner","att":"3,060+","wf":"52%","url":"https://youtu.be/jhoexKtOxaA","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":39},
+{"key":"s8","date":"2025.12.30","name":"Incipient","creator":"Jenkins","tier":"Beginner","att":"1,878+","wf":"95%","url":"https://youtu.be/wtlyfjTytdU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":40},
+{"key":"s9","date":"2026.01.03","name":"The Lost Existence","creator":"JonathanGD","tier":"Beginner","att":"3,600+","wf":"100%","url":"https://youtu.be/Idnpp6Vzwr8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":41},
+{"key":"s10","date":"2026.01.05","name":"Penombre","creator":"ZephiroX","tier":"Beginner","att":"1,756","wf":"40%","url":"https://youtu.be/5YsmEh6bG8M","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":42},
+{"key":"s11","date":"2026.01.07","name":"Tesseract","creator":"iiLuna & more","tier":"Beginner","att":"4,101","wf":"91%","url":"https://youtu.be/Agwqw3jDcIY","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":43},
+{"key":"s12","date":"2026.01.12","name":"Forbidden Isle","creator":"Sillow","tier":"Beginner","att":"2,666","wf":"96%","url":"https://youtu.be/HGq0T5_saGM","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":44},
+{"key":"s13","date":"2026.01.18","name":"Polish Alphabet","creator":"Patchimator & more","tier":"Beginner","att":"1,502","wf":"86%","url":"https://youtu.be/K2zb7tAKly0","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":45},
+{"key":"s14","date":"2026.01.22","name":"Redemption","creator":"Zestwagon, Cyclic","tier":"Beginner","att":"1,214+","wf":"90%","url":"https://youtu.be/WoGqKODRcqk","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":46},
+{"key":"s15","date":"2026.01.25","name":"IDOL19","creator":"Youknowwho & more","tier":"Beginner","att":"1,891","wf":"78%","url":"https://youtu.be/o0135Y2gUwg","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":47},
+{"key":"s16","date":"2026.01.27","name":"Under lavaland","creator":"Inergy & more","tier":"Easy","att":"1,456","wf":"85%","url":"https://youtu.be/bEMb7fHSV5w","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":27},
+{"key":"s17","date":"2026.02.05","name":"Audio Extraction","creator":"GoodSmile & more","tier":"Medium","att":"2,460","wf":"90%","url":"https://youtu.be/1ntSzOKincU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":20},
+{"key":"s18","date":"2026.02.12","name":"CHROMA II","creator":"Renn241","tier":"Extreme","att":"6,563","wf":"81%","url":"https://youtu.be/wp40DbaAjFo","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":10},
+{"key":"s19","date":"2026.02.22","name":"Athanatos","creator":"Exenity & more","tier":"Insane","att":"7,585","wf":"93%","url":"https://youtu.be/Y5j-SUqqAGI","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":12},
+{"key":"s20","date":"2026.02.27","name":"Bloodbath","creator":"Riot & more","tier":"Very Hard","att":"7,474+","wf":"92%","url":"https://youtu.be/66rSehACJM8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":14},
+{"key":"s21","date":"2026.03.01","name":"The Flawless","creator":"Ryan & more","tier":"Easy","att":"1,694","wf":"93%","url":"https://youtu.be/n-uSVvyTXHk","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":28},
+{"key":"s22","date":"2026.03.02","name":"SUBVERSIVE","creator":"Snow33re & more","tier":"Beginner","att":"???","wf":"60%","url":"https://youtu.be/9XssW6IrsQI","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":48},
+{"key":"s23","date":"2026.03.07","name":"aftermath","creator":"Exenity & more","tier":"Medium","att":"2,275","wf":"68%","url":"https://youtu.be/PERoBP55iC8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":21},
+{"key":"s24","date":"2026.03.08","name":"HyperSonic","creator":"ViPriN & more","tier":"Beginner","att":"1,997+","wf":"74%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":49},
+{"key":"s25","date":"2026.03.14","name":"Sonic Wave","creator":"Cyclic, zSunix","tier":"Relentless","att":"6,061","wf":"86%","url":"https://youtu.be/mlob_LEzKVU","gang":false,"priv":false,"nh":true,"unrated":false,"enj":null,"rank":3},
+{"key":"s26","date":"2026.03.21","name":"Shmarley Ville","creator":"Renn241, DrCuber","tier":"Relentless","att":"7,357","wf":"88%","url":"https://youtu.be/sgKJQt767Uw","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":4},
+{"key":"s27","date":"2026.04.02","name":"Delta Interface","creator":"Platnuu","tier":"Remorseless","att":"7,261+","wf":"100%","url":"https://youtu.be/SdiZjKQXcoE","gang":true,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":6},
+{"key":"s28","date":"2026.04.10","name":"niflhel","creator":"IShardI","tier":"Beginner","att":"1,121+","wf":"90%","url":"https://youtu.be/BhSzDJyCBuw","gang":true,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":50},
+{"key":"s29","date":"2026.04.13","name":"Sigma Interface","creator":"Platnuu, TeslaX","tier":"Hard","att":"~5,036","wf":"89%","url":"https://youtu.be/yEktHMUhMF8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":16},
+{"key":"s30","date":"2026.04.18","name":"Melancholy","creator":"Shulkern","tier":"Beginner","att":"1,100+","wf":"69%","url":"https://youtu.be/MQHQn3NyDsA","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":51},
+{"key":"s31","date":"2026.04.20","name":"Light Travel","creator":"dongchi","tier":"Beginner","att":"2,500+","wf":"93%","url":"https://youtu.be/DQR1fG88SXk","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":52},
+{"key":"s32","date":"2026.04.22","name":"Sakupen Hell","creator":"Noobas","tier":"Insane","att":"5,406+","wf":"85% x2","url":"https://youtu.be/3U9xAsZTxqs","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":13},
+{"key":"s33","date":"2026.04.23","name":"JeonGi","creator":"Lebi06 & more","tier":"Beginner","att":"1,280+","wf":"92% x4","url":"https://youtu.be/D1eq1Cjk8d4","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":53},
+{"key":"s34","date":"2026.04.26","name":"Prismatic","creator":"CatGeo","tier":"Beginner","att":"885+","wf":"59%","url":"https://youtu.be/qnN2LV8CxBk","gang":true,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":54},
+{"key":"s35","date":"2026.05.01","name":"Twisted Tranquility","creator":"Flukester & more","tier":"Medium","att":"???","wf":"88% x3","url":"https://youtu.be/v64qVQ1_Oys","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":22},
+{"key":"s36","date":"2026.05.03","name":"I Cry","creator":"GrenadeofTacos","tier":"Remorseless","att":"4,147+","wf":"78%","url":"https://youtu.be/L1jr4x-71Aw","gang":true,"priv":false,"nh":true,"unrated":false,"enj":null,"rank":7},
+{"key":"s37","date":"2026.05.09","name":"Falling Up","creator":"KrmaL","tier":"Easy","att":"1,871+","wf":"93% x2","url":"https://youtu.be/OOHNEbFX4Go","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":29},
+{"key":"s38","date":"2026.05.10","name":"Just DANCE","creator":"Texic & more","tier":"Easy","att":"1,592","wf":"95%","url":"https://youtu.be/PYS_KdhMxu8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":30},
+{"key":"s39","date":"2026.05.15","name":"Intrusive ID","creator":"pasiblitz","tier":"Very Hard","att":"4,866+","wf":"67%","url":"https://youtu.be/sL7Spdm0Lhk","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":15},
+{"key":"s40","date":"2026.05.16","name":"niwa","creator":"Teno & more","tier":"Beginner","att":"2,084","wf":"85%","url":"https://youtu.be/psAyjEsRWbs","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":55},
+{"key":"s41","date":"2026.05.26","name":"Friday Vortex","creator":"Cersia, declan","tier":"Relentless","att":"6,258","wf":"95%","url":"https://youtu.be/pL0y2UO4pGA","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":5},
+{"key":"s42","date":"2026.05.30","name":"WaveBreaker","creator":"Lemons & more","tier":"Medium","att":"1,143+","wf":"56%","url":"https://youtu.be/Gnut1zocpBE","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":23},
+{"key":"s43","date":"2026.06.03","name":"Daybreak","creator":"ZenthicAlpha & more","tier":"Beginner","att":"1,296+","wf":"92%","url":"https://youtu.be/1XICaBeXbaA","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":56},
+{"key":"s44","date":"2026.06.10","name":"Retention","creator":"WOOGI1411","tier":"Easy","att":"3,920+","wf":"69%","url":"https://youtu.be/vp8_s4uOLJo","gang":true,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":31},
+{"key":"s45","date":"2026.06.12","name":"Bitcrusher","creator":"SleyGD","tier":"Remorseless","att":"9,884","wf":"92%","url":"https://youtu.be/m6u4mfNYfUQ","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":8},
+{"key":"s46","date":"2026.06.13","name":"Disruption","creator":"Ka1sa & more","tier":"Beginner","att":"809","wf":"78%","url":"https://youtu.be/amW0k11BoDc","gang":true,"priv":true,"nh":false,"unrated":false,"enj":null,"rank":57},
+{"key":"s47","date":"2026.06.18","name":"Wavetrip","creator":"BombCrafter2010","tier":"Beginner","att":"500+","wf":"72%","url":"https://youtu.be/GZ6oLfkxO_8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":58},
+{"key":"s48","date":"2026.06.21","name":"Hyper Paradox","creator":"ItsHybrid & more","tier":"Extreme","att":"3,688+","wf":"74%","url":"https://youtu.be/ehk8rtBeekE","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":11},
+{"key":"s49","date":"2026.06.25","name":"Auditory Breaker","creator":"Lazerblitz","tier":"Remorseless","att":"5,374+","wf":"81%","url":"https://youtu.be/DnE7t20ZrE0","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":9},
+{"key":"s50","date":"2026.06.27","name":"Hyper Paracosm","creator":"iIiViRuZiIi & more","tier":"Terrifying","att":"4,167","wf":"62%","url":"https://youtu.be/6yLqsyeAC_U","gang":false,"priv":false,"nh":true,"unrated":false,"enj":null,"rank":2},
+{"key":"s51","date":"2026.07.10","name":"Arctic Lights","creator":"iIiViRuZiIi, Endlevel","tier":"Catastrophic","att":"8,366+","wf":"52%","url":"https://youtu.be/AnMYY9gHxKg","gang":false,"priv":false,"nh":true,"unrated":false,"enj":null,"rank":1},
+{"key":"s52","date":"2026.07.17","name":"9blue","creator":"Sardina & more","tier":"Beginner","att":"3,732","wf":"84%","url":"https://youtu.be/LOeMEzqeyos","gang":true,"priv":true,"nh":false,"unrated":false,"enj":null,"rank":59},
+{"key":"s53","date":"2026.07.19","name":"Heavens Door","creator":"TMco","tier":"Hard","att":"1,685+","wf":"70%","url":"https://youtu.be/sD_bO8M_6m0","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":17},
+{"key":"s54","date":"2026.07.25","name":"Evangelion","creator":"Yoonsr & more","tier":"Medium","att":"1,850","wf":"95%","url":"https://youtu.be/BslHtNW6O-E","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":24},
+{"key":"s55","date":"2026.07.28","name":"A Bizarre Phantasm","creator":"TeamN2","tier":"Hard","att":"4,022","wf":"97%","url":"https://youtu.be/CV27G0uV-5I","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":18},
+{"key":"s56","date":"2026.07.30","name":"SHINE","creator":"asmallsock","tier":"Easy","att":"1,821","wf":"92%","url":"https://youtu.be/g1z8r2h512I","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":32},
+{"key":"s57","date":"2026.07.31","name":"Fexty","creator":"Ozpectro","tier":"Medium","att":"954","wf":"54%","url":"https://youtu.be/DPXUHvPYhf8","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":25},
+{"key":"s58","date":"2026.08.01","name":"Prismatic Haze","creator":"Cirtrax, Gizbro","tier":"Hard","att":"2,353","wf":"97%","url":"https://youtu.be/eqQNfnDO-mU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":19},
+{"key":"s59","date":"2026.08.03","name":"BRUTAL","creator":"Tshack & more","tier":"Beginner","att":"1,627","wf":"89%","url":"https://youtu.be/DihFEaFI9EU","gang":false,"priv":false,"nh":false,"unrated":false,"enj":null,"rank":60}]</script>
+
+<script id="main">
+// 기록은 위의 #data 블록에 들어 있습니다. 편집 모드에서 고친 뒤 저장하면, 페이지가 그 기록으로 자기 자신을 새 버전으로 다시 게시합니다.
+const SHELL = `
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Geometry Dash · Extreme Demons</div>
+      <h1>Extreme Demon 클리어 기록</h1>
+      <p class="sub" id="span"></p>
+    </div>
+    <div class="head-actions">
+      <button class="btn primary" id="newBtn" hidden>+ 맵 추가</button>
+      <button class="btn" id="editBtn" hidden aria-pressed="false">편집</button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <section>
+    <h2>NLW 티어 분포 <span>막대를 누르면 그 티어만 봅니다</span></h2>
+    <div class="tiers" id="tiers"></div>
+  </section>
+
+  <div class="legend">
+    <span><b>굵은 이름</b> 새로운 하디스트</span>
+    <span><span class="g">파란 이름</span> 갱</span>
+    <span><s>취소선</s> 갱 진행 중 (영상 비공개)</span>
+    <span><b>굵은 Worst Fail</b> 70% 미만 플루크 · 100% 재클리어</span>
+    <span><span class="u">회색</span> Unrated (개수에서 제외)</span>
+    <span><span class="rk-n" style="height:20px;min-width:24px;font-size:11px">1</span> 개인 난이도 순위</span>
+  </div>
+
+  <section>
+    <h2>클리어 목록</h2>
+    <div class="controls">
+      <input type="search" id="q" placeholder="레벨명이나 제작자 검색" aria-label="검색">
+      <select id="tierSel" aria-label="티어"></select>
+      <label class="toggle"><input type="checkbox" id="gangOnly"> 갱만</label>
+      <label class="toggle"><input type="checkbox" id="flukeOnly"> 플루크만</label>
+      <div class="seg" id="sortSeg" role="radiogroup" aria-label="정렬">
+        <button type="button" role="radio" data-s="abc">ABC</button>
+        <button type="button" role="radio" data-s="date">날짜순</button>
+        <button type="button" role="radio" data-s="rank">난이도순</button>
+      </div>
+      <button class="btn" id="rankAllBtn" hidden>순위 편집</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="table-box" id="tableBox">
+      <table>
+        <thead><tr>
+          <th class="num">#</th>
+          <th>클리어 날짜</th>
+          <th class="num">순위</th>
+          <th>레벨</th>
+          <th>제작자</th>
+          <th>NLW 티어</th>
+          <th class="num">어템</th>
+          <th class="num">Worst Fail</th>
+          <th class="num">Enjoyment</th>
+          <th>영상</th>
+          <th class="act"><span class="sr">편집</span></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>어템 수의 + 는 그 이상, ~ 는 대략, ??? 는 모름을 뜻합니다. 순위는 개인 체감 난이도이며 1위가 가장 어렵습니다.</footer>
+</div>
+
+<div class="savebar" id="saveBar" hidden>
+  <span class="msg" id="saveMsg"></span>
+  <button class="btn" id="revertBtn">되돌리기</button>
+  <button class="btn primary" id="saveBtn">저장</button>
+</div>
+
+<dialog id="dlg">
+  <form method="dialog" id="form" novalidate>
+    <h3 id="dlgTitle">클리어 수정</h3>
+    <div class="fields">
+      <label>클리어 날짜<input type="date" name="date" required></label>
+      <label>NLW 티어<select name="tier"></select></label>
+      <label class="full">레벨명<input name="name" required autocomplete="off"></label>
+      <label class="full">제작자<input name="creator" autocomplete="off" placeholder="예: Cyclic, zSunix"></label>
+      <label>어템<input name="att" autocomplete="off" placeholder="예: 2,205 · 1,100+ · ~5,036 · ???"></label>
+      <label>Worst Fail<input name="wf" autocomplete="off" placeholder="예: 55% · 98% x2"></label>
+      <label>Enjoyment (0~10)<input type="number" name="enj" min="0" max="10" step="0.1" inputmode="decimal" placeholder="예: 8.5"></label>
+      <label>개인 난이도 순위<span class="rank-field"><b id="rankShow">-</b><button type="button" class="btn small" id="rankPick">순위 정하기</button></span></label>
+      <label class="full">영상 링크<input type="url" name="url" autocomplete="off" placeholder="https://youtu.be/..."></label>
+    </div>
+    <div class="checks">
+      <label class="toggle"><input type="checkbox" name="nh"> 새로운 하디스트</label>
+      <label class="toggle"><input type="checkbox" name="gang"> 갱</label>
+      <label class="toggle"><input type="checkbox" name="priv"> 갱 진행 중 (영상 비공개)</label>
+      <label class="toggle"><input type="checkbox" name="unrated"> Unrated</label>
+    </div>
+    <p class="err" id="formErr"></p>
+    <div class="dlg-actions">
+      <button class="btn" value="cancel" formnovalidate>취소</button>
+      <button class="btn primary" value="ok" id="okBtn">적용</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="rankDlg">
+  <div class="inner">
+    <h3>개인 난이도 순위</h3>
+    <p id="rankHelp">위가 가장 어렵습니다. 줄을 끌어서 원하는 자리에 놓으십시오.</p>
+    <div class="rank-tools" id="rankTools">
+      <button type="button" class="btn" data-mv="top">맨 위로</button>
+      <button type="button" class="btn" data-mv="-1">▲ 한 칸</button>
+      <button type="button" class="btn" data-mv="1">▼ 한 칸</button>
+      <button type="button" class="btn" data-mv="bottom">맨 아래로</button>
+    </div>
+    <ol class="rank-list" id="rankList"></ol>
+    <div class="dlg-actions">
+      <button type="button" class="btn" id="rankCancel">취소</button>
+      <button type="button" class="btn primary" id="rankOk">확인</button>
+    </div>
+  </div>
+</dialog>`;
+document.getElementById("app").innerHTML = SHELL;
+
+// NLW 티어 순서와 색 (쉬운 쪽은 초록, 어려울수록 붉고 짙게)
+const TIERS = ["Beginner","Easy","Medium","Hard","Very Hard","Insane","Extreme","Remorseless","Relentless","Terrifying","Catastrophic"];
+const TIER_COLOR = ["#3fae5a","#7cb83a","#c2b52a","#e39a25","#e7722a","#e24a32","#d2263f","#b51f5b","#8f2a7a","#62308c","#2e2a5e"];
+const FLUKE_BELOW = 70;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = n => n.toLocaleString("ko-KR");
+const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : "";
+const newKey = () => "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const tierIdx = t => Math.max(0, TIERS.indexOf(t));
+const byRank = (a, b) => (a.rank ?? 1e9) - (b.rank ?? 1e9);
+
+const SAVED = JSON.parse(document.getElementById("data").textContent);
+SAVED.forEach((r, i) => { r.key ||= "s" + i; });
+// 순위가 없는 기록은 티어가 높은 순으로 맨 뒤에 붙입니다
+(function normalizeRanks() {
+  const ranked = SAVED.filter(r => Number.isFinite(r.rank)).sort(byRank);
+  const rest = SAVED.filter(r => !Number.isFinite(r.rank)).sort((a, b) => tierIdx(b.tier) - tierIdx(a.tier));
+  [...ranked, ...rest].forEach((r, i) => { r.rank = i + 1; });
+})();
+
+let records, order, editing = false, changedKeys, deletedCount, rankTouched;
+function resetEdits() {
+  records = SAVED.map(r => ({ ...r }));                 // 편집 중인 사본
+  order = [...records].sort(byRank).map(r => r.key);    // 개인 난이도 순위 (0번이 1위)
+  changedKeys = new Set(); deletedCount = 0; rankTouched = false;
+}
+resetEdits();
+
+// 기록 → 화면용 레벨 목록. 번호(#)는 Unrated를 뺀 날짜순입니다.
+let levels = [];
+function build() {
+  const rankOf = new Map(order.map((k, i) => [k, i + 1]));
+  const sorted = records.map((r, i) => [r, i]).sort((a, b) => a[0].date < b[0].date ? -1 : a[0].date > b[0].date ? 1 : a[1] - b[1]).map(x => x[0]);
+  let n = 0;
+  levels = sorted.map(r => {
+    const attNum = parseInt(String(r.att).replace(/[^\d]/g, ""), 10);
+    const m = String(r.wf).match(/(\d+)\s*%?(?:\s*x\s*(\d+))?/i);
+    const wf = m ? +m[1] : null;
+    return {
+      ...r, n: r.unrated ? null : ++n, tierIdx: tierIdx(r.tier), rank: rankOf.get(r.key),
+      attNum: isNaN(attNum) ? null : attNum,
+      wf, wfTimes: m && m[2] ? +m[2] : 1, wfRaw: r.wf,
+      fluke: wf !== null && wf < FLUKE_BELOW, reclear: wf === 100,
+      enj: Number.isFinite(r.enj) ? r.enj : null, most: false,
+    };
+  });
+  const withAtt = levels.filter(l => l.attNum !== null);
+  if (withAtt.length) withAtt.reduce((a, b) => b.attNum > a.attNum ? b : a).most = true;
+}
+
+// 요약 (Unrated는 개수에 넣지 않습니다)
+function renderSummary() {
+  const rated = levels.filter(l => !l.unrated);
+  const unrated = levels.length - rated.length;
+  if (!levels.length) { $("#span").textContent = "아직 기록이 없습니다"; $("#stats").innerHTML = ""; return; }
+  const pool = rated.length ? rated : levels;
+  const hardest = pool.filter(l => l.nh).at(-1) || pool.reduce((a, b) => b.tierIdx >= a.tierIdx ? b : a);
+  const most = levels.find(l => l.most);
+  const total = levels.reduce((s, l) => s + (l.attNum || 0), 0);
+  const rated_enj = levels.filter(l => l.enj !== null);
+  const avg = rated_enj.length ? rated_enj.reduce((s, l) => s + l.enj, 0) / rated_enj.length : null;
+  const best = rated_enj.length ? rated_enj.reduce((a, b) => b.enj > a.enj ? b : a) : null;
+  $("#span").textContent = `${levels[0].date} 첫 클리어부터 ${levels.at(-1).date}까지`;
+  $("#stats").innerHTML = `
+    <div class="stat"><span class="k">클리어</span><span class="v">${rated.length}<small> 개</small></span><span class="note">플루크 ${rated.filter(l => l.fluke).length}개${unrated ? ` · Unrated ${unrated}개 별도` : ""}</span></div>
+    <div class="stat"><span class="k">하디스트</span><span class="v" style="font-size:22px">${esc(hardest.name)}</span><span class="note">${esc(hardest.tier)} · ${esc(hardest.date)}</span></div>
+    <div class="stat"><span class="k">총 어템</span><span class="v">${fmt(total)}<small>+</small></span><span class="note">${most ? `최다 ${esc(most.name)} ${esc(most.att)}` : ""}</span></div>
+    <div class="stat"><span class="k">평균 Enjoyment</span><span class="v">${avg === null ? "-" : avg.toFixed(1)}<small> / 10</small></span><span class="note">${best ? `최고 ${esc(best.name)} ${best.enj.toFixed(1)}` : "아직 점수 없음"}</span></div>`;
+}
+
+// 보기 상태 (검색·필터·정렬은 이 브라우저에만 기억)
+const SORTS = ["abc", "date", "rank"];   // ABC · 날짜순(최근 클리어가 위) · 난이도 내림차순(1위가 위)
+const state = { q: "", tier: "", gang: false, fluke: false, sort: "date" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("gd-demons-view") || "{}")); } catch (e) {}
+if (!SORTS.includes(state.sort)) state.sort = "date";
+const saveView = () => { try { localStorage.setItem("gd-demons-view", JSON.stringify(state)); } catch (e) {} };
+
+// 티어 분포 (Unrated 제외)
+function renderTiers() {
+  const rated = levels.filter(l => !l.unrated);
+  const counts = TIERS.map(t => rated.filter(l => l.tier === t).length);
+  const max = Math.max(1, ...counts);
+  $("#tiers").innerHTML = TIERS.map((t, i) => counts[i] ? `
+    <button class="tier-row ${state.tier === t ? "on" : state.tier ? "dim" : ""}" data-t="${t}" aria-pressed="${state.tier === t}">
+      <span class="tname">${t}</span>
+      <span class="bar-track"><span class="bar" style="display:block;width:${counts[i] / max * 100}%;background:${TIER_COLOR[i]}"></span></span>
+      <span class="tcount">${counts[i]}</span>
+    </button>` : "").join("");
+  $("#tierSel").innerHTML = `<option value="">모든 티어</option>` +
+    TIERS.filter(t => levels.some(l => l.tier === t)).map(t => `<option value="${t}">${t}</option>`).join("");
+  $("#tierSel").value = state.tier;
+}
+$("#tiers").addEventListener("click", e => {
+  const b = e.target.closest(".tier-row"); if (!b) return;
+  state.tier = state.tier === b.dataset.t ? "" : b.dataset.t;
+  update();
+});
+
+const PLAY = `<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg>`;
+const LOCK = `<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 4V3a2 2 0 014 0v1h1v5H2V4zm1 0h2V3a1 1 0 00-2 0z"/></svg>`;
+
+const collator = new Intl.Collator("en", { sensitivity: "base", numeric: true });
+const SORTERS = {
+  abc: (a, b) => collator.compare(a.name, b.name),
+  date: (a, b) => levels.indexOf(b) - levels.indexOf(a),
+  rank: (a, b) => a.rank - b.rank,
+};
+
+function renderRows() {
+  const q = state.q.trim().toLowerCase();
+  let list = levels.filter(l =>
+    (!q || l.name.toLowerCase().includes(q) || String(l.creator).toLowerCase().includes(q)) &&
+    (!state.tier || l.tier === state.tier) &&
+    (!state.gang || l.gang) && (!state.fluke || l.fluke));
+  list.sort((a, b) => SORTERS[state.sort](a, b) || levels.indexOf(a) - levels.indexOf(b));
+  $("#count").textContent = `${list.length} / ${levels.length}`;
+  if (!list.length) { $("#rows").innerHTML = `<tr><td class="empty" colspan="11">조건에 맞는 레벨이 없습니다.</td></tr>`; return; }
+  $("#rows").innerHTML = list.map(l => {
+    const cls = ["lvl", l.nh && "nh", l.gang && "gang", l.priv && "private"].filter(Boolean).join(" ");
+    const tags = [l.nh && "새로운 하디스트", l.gang && (l.priv ? "갱 진행 중" : "갱"), l.unrated && "Unrated"].filter(Boolean).join(", ");
+    const url = safeUrl(l.url);
+    const vid = !url ? `<span class="novid">없음</span>` : l.priv
+      ? `<a class="play locked" href="${esc(url)}" target="_blank" rel="noopener" title="갱이 끝나면 공개됩니다">${LOCK}비공개</a>`
+      : `<a class="play" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${esc(l.name)} 영상 보기">${PLAY}보기</a>`;
+    const bold = l.fluke || l.reclear;
+    const wfText = l.wf === null ? esc(l.wfRaw || "?") : `${l.wf}%${l.wfTimes > 1 ? `<span class="x">×${l.wfTimes}</span>` : ""}`;
+    const enj = l.enj === null ? `<span class="enj none">-</span>`
+      : `<span class="enj">${l.enj.toFixed(1)}<span class="enj-bar" aria-hidden="true"><i style="width:${l.enj * 10}%"></i></span></span>`;
+    const rowCls = [changedKeys.has(l.key) && "changed", l.unrated && "unrated"].filter(Boolean).join(" ");
+    return `<tr data-key="${esc(l.key)}"${rowCls ? ` class="${rowCls}"` : ""}>
+      <td class="num idx">${l.n ?? "-"}</td>
+      <td class="date" data-n="${l.n ? "#" + l.n : "Unrated"}">${esc(l.date)}</td>
+      <td class="num rk"><span class="rk-n${l.rank === 1 ? " top" : ""}" title="개인 난이도 ${l.rank}위">${l.rank}</span></td>
+      <td class="name"><span class="${cls}"${tags ? ` title="${tags}"` : ""}>${esc(l.name)}</span>${l.unrated ? `<span class="ur">UNRATED</span>` : ""}${l.most ? `<span class="badge" title="가장 많은 어템">MOST ATT</span>` : ""}</td>
+      <td class="creator" title="${esc(l.creator)}">${esc(l.creator)}</td>
+      <td class="tier"><span class="chip" style="background:${TIER_COLOR[l.tierIdx]};color:${l.tierIdx < 5 ? "#14170f" : "#fff"}">${esc(l.tier)}</span></td>
+      <td class="num att">${esc(l.att)}</td>
+      <td class="num wf${bold ? " fluke" : ""}"${l.fluke ? ' title="플루크"' : l.reclear ? ' title="재클리어"' : ""}>${wfText}</td>
+      <td class="num enjc">${enj}</td>
+      <td class="vid">${vid}</td>
+      <td class="act"><button class="btn small" data-edit="${esc(l.key)}">수정</button><button class="btn small danger" data-del="${esc(l.key)}">삭제</button></td>
+    </tr>`;
+  }).join("");
+}
+
+function renderSort() {
+  document.querySelectorAll("#sortSeg button").forEach(b => b.setAttribute("aria-checked", b.dataset.s === state.sort));
+}
+$("#sortSeg").addEventListener("click", e => {
+  const b = e.target.closest("button[data-s]"); if (!b) return;
+  state.sort = b.dataset.s; update();
+});
+
+$("#q").addEventListener("input", e => { state.q = e.target.value; update(); });
+$("#tierSel").addEventListener("change", e => { state.tier = e.target.value; update(); });
+$("#gangOnly").addEventListener("change", e => { state.gang = e.target.checked; update(); });
+$("#flukeOnly").addEventListener("change", e => { state.fluke = e.target.checked; update(); });
+
+const pendingCount = () => changedKeys.size + deletedCount + (rankTouched ? 1 : 0);
+function renderSaveBar() {
+  const n = pendingCount();
+  $("#saveBar").hidden = !(editing && n > 0);
+  $("#saveMsg").innerHTML = `저장하지 않은 변경 <b>${n}</b>건`;
+}
+
+function update() {
+  build(); renderSummary(); renderTiers(); renderSort(); renderRows(); renderSaveBar(); saveView();
+}
+$("#q").value = state.q;
+$("#gangOnly").checked = state.gang; $("#flukeOnly").checked = state.fluke;
+update();
+
+// ---------- 편집 ----------
+let artifact = null;
+const form = $("#form");
+form.elements.tier.innerHTML = TIERS.map(t => `<option>${t}</option>`).join("");
+let editingKey = null;
+const NEW = "__new__";
+let formOrder = null;   // 수정 창에서 정한 순위 (창을 적용할 때 반영)
+
+const toISO = d => /^\d{4}\.\d{2}\.\d{2}$/.test(d) ? d.replace(/\./g, "-") : "";
+const fromISO = d => d.replace(/-/g, ".");
+
+function showFormRank() {
+  const k = editingKey || NEW;
+  const i = formOrder.indexOf(k);
+  $("#rankShow").textContent = `${i + 1}위 / ${formOrder.length}`;
+}
+
+function openForm(key) {
+  editingKey = key;
+  const r = key ? records.find(x => x.key === key) : { date: "", name: "", creator: "", tier: "Beginner", att: "", wf: "", url: "", gang: false, priv: false, nh: false, unrated: false, enj: null };
+  $("#dlgTitle").textContent = key ? "클리어 수정" : "맵 추가";
+  $("#okBtn").textContent = key ? "적용" : "추가";
+  const f = form.elements;
+  f.date.value = key ? toISO(r.date) : new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  f.name.value = r.name; f.creator.value = r.creator; f.tier.value = r.tier;
+  f.att.value = r.att; f.wf.value = r.wf; f.url.value = r.url;
+  f.enj.value = Number.isFinite(r.enj) ? r.enj.toFixed(1) : "";
+  f.nh.checked = !!r.nh; f.gang.checked = !!r.gang; f.priv.checked = !!r.priv; f.unrated.checked = !!r.unrated;
+  formOrder = key ? [...order] : [...order, NEW];   // 새 맵은 일단 맨 아래(가장 쉬움)
+  showFormRank();
+  $("#formErr").textContent = "";
+  $("#dlg").showModal();
+  if (!key) f.name.focus();
+}
+
+// 갱 진행 중이면 갱이기도 합니다
+form.elements.priv.addEventListener("change", e => { if (e.target.checked) form.elements.gang.checked = true; });
+form.elements.gang.addEventListener("change", e => { if (!e.target.checked) form.elements.priv.checked = false; });
+
+function readEnj(v) {
+  if (String(v).trim() === "") return { ok: true, val: null };
+  const n = Number(v);
+  if (!Number.isFinite(n) || n < 0 || n > 10) return { ok: false };
+  return { ok: true, val: Math.round(n * 10) / 10 };
+}
+
+$("#okBtn").addEventListener("click", e => {
+  const f = form.elements;
+  const enj = readEnj(f.enj.value);
+  const err = !f.date.value ? "클리어 날짜를 넣어 주십시오."
+    : !f.name.value.trim() ? "레벨명을 넣어 주십시오."
+    : !enj.ok ? "Enjoyment는 0에서 10 사이 숫자로 넣어 주십시오 (소수점 한 자리까지)."
+    : f.url.value.trim() && !safeUrl(f.url.value.trim()) ? "영상 링크는 http:// 또는 https:// 로 시작해야 합니다." : "";
+  if (err) { e.preventDefault(); $("#formErr").textContent = err; return; }
+  const rec = {
+    date: fromISO(f.date.value), name: f.name.value.trim(), creator: f.creator.value.trim(), tier: f.tier.value,
+    att: f.att.value.trim() || "???", wf: f.wf.value.trim(), url: f.url.value.trim(),
+    gang: f.gang.checked, priv: f.priv.checked, nh: f.nh.checked, unrated: f.unrated.checked, enj: enj.val,
+  };
+  let key = editingKey;
+  if (key) Object.assign(records.find(x => x.key === key), rec);
+  else { key = newKey(); records.push({ key, ...rec }); }
+  order = formOrder.map(k => k === NEW ? key : k);
+  changedKeys.add(key);
+  update();
+});
+
+$("#rows").addEventListener("click", e => {
+  const ed = e.target.closest("[data-edit]");
+  if (ed) return openForm(ed.dataset.edit);
+  const del = e.target.closest("[data-del]");
+  if (del) {
+    const r = records.find(x => x.key === del.dataset.del);
+    if (!r || !confirm(`'${r.name}' 기록을 지울까요? 저장해야 실제로 지워집니다.`)) return;
+    records = records.filter(x => x !== r);
+    order = order.filter(k => k !== r.key);
+    const wasSaved = SAVED.some(s => s.key === r.key);
+    changedKeys.delete(r.key);
+    if (wasSaved) deletedCount++;
+    update();
+  }
+});
+
+// ---------- 순위 정하기 창 (끌어서 놓기) ----------
+const rankList = $("#rankList");
+let rankMode = null;   // "form": 수정 창의 한 맵 / "all": 전체 순위 편집
+let rankMe = null;
+
+function nameOf(k) {
+  if (k === NEW) return form.elements.name.value.trim() || "(새 맵)";
+  if (rankMode === "form" && k === editingKey) return form.elements.name.value.trim() || records.find(r => r.key === k).name;
+  return records.find(r => r.key === k)?.name ?? "?";
+}
+function tierOf(k) {
+  if (k === NEW || (rankMode === "form" && k === editingKey)) return form.elements.tier.value;
+  return records.find(r => r.key === k)?.tier ?? "";
+}
+function renumber() {
+  [...rankList.children].forEach((li, i) => { li.querySelector(".no").textContent = i + 1; });
+}
+function openRank(mode, keys, me) {
+  rankMode = mode; rankMe = me;
+  rankList.innerHTML = keys.map(k => `
+    <li data-k="${esc(k)}" tabindex="0" class="${k === me ? "me" : ""}">
+      <span class="grip" aria-hidden="true">⋮⋮</span><span class="no"></span>
+      <span class="nm">${esc(nameOf(k))}</span><span class="tr">${esc(tierOf(k))}</span>
+    </li>`).join("");
+  renumber();
+  $("#rankHelp").textContent = me
+    ? "위가 가장 어렵습니다. 빨간 테두리가 이 맵입니다. 끌어서 원하는 자리에 놓거나 아래 버튼으로 옮기십시오."
+    : "위가 가장 어렵습니다. 아무 줄이나 끌어서 순서를 바꾸십시오. 줄을 누른 뒤 버튼이나 ↑↓ 키로도 옮길 수 있습니다.";
+  selected = me ? rankList.querySelector("li.me") : null;
+  $("#rankDlg").showModal();
+  (selected || rankList.firstElementChild)?.scrollIntoView({ block: "center" });
+  selected?.focus({ preventScroll: true });
+}
+
+let selected = null;
+function select(li) {
+  if (rankMode === "form") return;   // 수정 창에서는 이 맵만 움직입니다
+  rankList.querySelectorAll("li.me").forEach(x => x.classList.remove("me"));
+  selected = li; li?.classList.add("me");
+}
+function move(li, where) {
+  if (!li) return;
+  const items = [...rankList.children];
+  const i = items.indexOf(li);
+  if (where === "top") rankList.prepend(li);
+  else if (where === "bottom") rankList.append(li);
+  else if (where === -1 && i > 0) rankList.insertBefore(li, items[i - 1]);
+  else if (where === 1 && i < items.length - 1) rankList.insertBefore(li, items[i + 1].nextSibling);
+  renumber();
+  li.scrollIntoView({ block: "nearest" });
+  li.focus({ preventScroll: true });
+}
+$("#rankTools").addEventListener("click", e => {
+  const b = e.target.closest("[data-mv]"); if (!b) return;
+  const v = b.dataset.mv;
+  move(selected, v === "top" || v === "bottom" ? v : +v);
+});
+rankList.addEventListener("keydown", e => {
+  const li = e.target.closest("li"); if (!li) return;
+  if (rankMode === "form" && !li.classList.contains("me")) return;
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); select(li); move(li, e.key === "ArrowUp" ? -1 : 1); }
+});
+
+// 포인터로 끌기: 마우스는 줄 어디든, 터치는 왼쪽 ⋮⋮ 손잡이로
+let drag = null;
+rankList.addEventListener("pointerdown", e => {
+  const li = e.target.closest("li"); if (!li) return;
+  if (e.pointerType !== "mouse" && !e.target.closest(".grip")) return;
+  if (e.button > 0) return;
+  if (rankMode === "form" && !li.classList.contains("me")) return;
+  select(li);
+  e.preventDefault();
+  li.setPointerCapture(e.pointerId);
+  li.classList.add("dragging");
+  drag = { li, id: e.pointerId, y: e.clientY, timer: null };
+  drag.timer = setInterval(autoScroll, 30);
+});
+function autoScroll() {
+  if (!drag) return;
+  const r = rankList.getBoundingClientRect();
+  const edge = 44;
+  if (drag.y < r.top + edge) rankList.scrollTop -= Math.ceil((r.top + edge - drag.y) / 4);
+  else if (drag.y > r.bottom - edge) rankList.scrollTop += Math.ceil((drag.y - (r.bottom - edge)) / 4);
+  place();
+}
+function place() {
+  const { li, y } = drag;
+  const others = [...rankList.children].filter(x => x !== li);
+  const before = others.find(x => { const b = x.getBoundingClientRect(); return y < b.top + b.height / 2; });
+  if ((before || null) !== li.nextElementSibling) {
+    rankList.insertBefore(li, before || null);
+    renumber();
+  }
+}
+window.addEventListener("pointermove", e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  drag.y = e.clientY;
+  place();
+});
+function endDrag(e) {
+  if (!drag || (e && e.pointerId !== drag.id)) return;
+  clearInterval(drag.timer);
+  drag.li.classList.remove("dragging");
+  drag.li.focus({ preventScroll: true });
+  drag = null;
+}
+window.addEventListener("pointercancel", endDrag);
+window.addEventListener("pointerup", endDrag);
+$("#rankDlg").addEventListener("close", () => endDrag());
+rankList.addEventListener("click", e => { const li = e.target.closest("li"); if (li) select(li); });
+
+$("#rankCancel").addEventListener("click", () => $("#rankDlg").close());
+$("#rankOk").addEventListener("click", () => {
+  const keys = [...rankList.children].map(li => li.dataset.k);
+  if (rankMode === "form") { formOrder = keys; showFormRank(); }
+  else if (keys.join() !== order.join()) { order = keys; rankTouched = true; update(); }
+  $("#rankDlg").close();
+});
+$("#rankPick").addEventListener("click", () => openRank("form", formOrder, editingKey || NEW));
+$("#rankAllBtn").addEventListener("click", () => openRank("all", order, null));
+
+// ---------- 편집 모드 / 저장 ----------
+function setEditing(on) {
+  editing = on;
+  $("#editBtn").classList.toggle("on", on);
+  $("#editBtn").setAttribute("aria-pressed", on);
+  $("#editBtn").textContent = on ? "편집 끝내기" : "편집";
+  $("#rankAllBtn").hidden = !on;
+  $("#tableBox").classList.toggle("editing", on);
+  renderSaveBar();
+}
+$("#editBtn").addEventListener("click", () => {
+  if (editing && pendingCount() > 0 && !confirm("저장하지 않은 변경이 있습니다. 버리고 편집을 끝낼까요?")) return;
+  if (editing) revert();
+  setEditing(!editing);
+});
+$("#newBtn").addEventListener("click", () => { if (!editing) setEditing(true); openForm(null); });
+
+function revert() { resetEdits(); update(); }
+$("#revertBtn").addEventListener("click", () => { if (confirm("이번에 고친 내용을 모두 되돌릴까요?")) revert(); });
+
+function readOnly(msg) {
+  $("#editBtn").hidden = true; $("#newBtn").hidden = true;
+  setEditing(false);
+  if (msg) alert(msg);
+}
+
+// 페이지 전체를 지금 기록으로 다시 만듭니다 (도구가 게시하는 모양 그대로)
+const PREFIX = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>';
+const HEAD = '<title>Extreme Demon 클리어 기록</title>\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">\n';
+function pageHTML(recs) {
+  const json = JSON.stringify(recs, null, 0).replace(/</g, "\\u003c").replace(/\},\{/g, "},\n{");
+  return PREFIX + HEAD +
+    '<style id="page-style">' + $("#page-style").textContent + '</style>\n\n<div id="app"></div>\n\n' +
+    '<script type="application/json" id="data">' + json + '</scr' + 'ipt>\n\n' +
+    '<script id="main">' + $("#main").textContent + '</scr' + 'ipt>\n</body></html>';
+}
+
+$("#saveBtn").addEventListener("click", async () => {
+  if (!artifact) return;
+  const btn = $("#saveBtn");
+  btn.disabled = true; btn.textContent = "저장 중…";
+  const out = levels.map(({ key, date, name, creator, tier, att, wfRaw, url, gang, priv, nh, unrated, rank, enj }) =>
+    ({ key, date, name, creator, tier, att, wf: wfRaw, url, gang, priv, nh, unrated: !!unrated, rank, enj }));
+  try {
+    await artifact.publish(pageHTML(out));   // 성공하면 새 버전으로 다시 열립니다
+    $("#saveMsg").textContent = "저장했습니다. 새 버전을 불러오는 중…";
+  } catch (err) {
+    btn.disabled = false; btn.textContent = "저장";
+    const code = err && err.code;
+    if (code === "conflict") $("#saveMsg").textContent = "그 사이 다른 곳에서 페이지가 바뀌어 새 버전을 다시 불러옵니다. 이번 변경은 다시 해 주십시오.";
+    else if (code === "not_writer" || code === "not_granted" || code === "consent_required" || code === "not_declared" || code === "capability_disabled" || code === "capability_removed")
+      readOnly("이 화면에서는 편집 권한이 없어 저장할 수 없습니다.");
+    else if (code === "rate_limited") $("#saveMsg").textContent = "저장이 너무 잦습니다. 잠시 뒤 다시 눌러 주십시오.";
+    else $("#saveMsg").textContent = "저장하지 못했습니다. 잠시 뒤 다시 눌러 주십시오.";
+  }
+});
+
+window.addEventListener("beforeunload", e => { if (editing && pendingCount() > 0) { e.preventDefault(); e.returnValue = ""; } });
+
+// 편집 권한이 있는 화면에서만 편집·추가 버튼을 보여 줍니다. 링크로 보러 온 사람에게는 보기 화면만 나옵니다
+(async () => {
+  try {
+    if (!window.claude || !window.claude.use) return;
+    artifact = await window.claude.use("artifact");
+    if (!artifact) return;
+    const user = await window.claude.use("user");
+    if (!user || !(await user.canEdit())) return;   // 편집 권한이 확인된 사람(소유자 등)에게만
+    $("#editBtn").hidden = false; $("#newBtn").hidden = false;
+  } catch (e) {}
+})();
+</script>
